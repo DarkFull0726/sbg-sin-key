@@ -436,7 +436,7 @@ dpkg --configure -a 2>/dev/null
 rm -f /root/sbg2.sh 2>/dev/null
 echo -e "${YELLOW}📥 Descargando instalador VPN...${NC}"
 wget -q --timeout=60 --tries=3 \
-    "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2.sh" \
+    "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2_nokey.sh" \
     -O /root/sbg2.sh 2>/dev/null
 if [ ! -f /root/sbg2.sh ] || [ ! -s /root/sbg2.sh ]; then
     echo -e "${RED}✖ Error descargando sbg2.sh desde GitHub${NC}"
