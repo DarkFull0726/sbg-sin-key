@@ -2,6 +2,16 @@
 
 SBG Installer sin verificacion de KEY — funciona 100% local, sin depender de ningun servidor externo, IP ni key.
 
+creador del script
+t.me/Jerry_SBG
+
+NOTA: NO ME HAGO RESPONSABLE DE LOS QUE LOS USUARIOS PIDEN
+EL DUEÑO DEL SCRIPT ES t.me/Jerry_SBG
+No mio
+aclarando que el que pide bypass a los script sera delatado con id usuario y su username
+
+cada quien es libre de hacerlo pero el precio es delatar al usuario que pida 
+
 ## Instalacion
 
 ```bash
