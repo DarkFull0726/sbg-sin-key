@@ -1,5 +1,5 @@
 #!/bin/bash
-# By Jerry_SBG - VERSIÓN DEFINITIVA
+# By Jerry_SBG - VERSIÓN DEFINITIVA (sin KEY)
 ### Color
 BIBlue='\033[1;94m'
 BGCOLOR='\e[1;97;101m'
@@ -10,11 +10,10 @@ YELLOW='\033[33m'
 GREEN='\033[32m'
 GRAY='\e[1;30m'
 purple='\033[1;95m'
-# BUGFIX: variables de color faltantes (causaban output roto)
 BLUE='\033[1;34m'
 WH='\033[1;37m'
-OK="\e[1;32m[✓]\e[0m"
-EROR="\e[1;31m[✗]\e[0m"
+OK='\033[1;32m[✔]\033[0m'
+EROR='\033[1;31m[✖]\033[0m'
 kill_zombies() {
     pkill -9 -f "apt|dpkg" 2>/dev/null
     pkill -9 -f "unattended-upgrades" 2>/dev/null
@@ -37,7 +36,6 @@ IVAR="/etc/http-instas"
 SCPT_DIR="/var/www/html/KEY"
 rm $(pwd)/$0 2>/dev/null
 rm -rf /tmp/tmp.* 2>/dev/null
-# BUGFIX: rm -rf /root/*.sh borraba TODOS los scripts — se limita solo a temporales conocidos
 rm -f /root/sbg.sh 2>/dev/null
 desofus() {
     local input="$1"
@@ -65,12 +63,12 @@ extraer_key() {
     if [ -z "$datos" ]; then
         echo ""
         return 1
-    fi    
+    fi
     local sin_ip_puerto=$(echo "$datos" | cut -d'/' -f2-)
     echo "$sin_ip_puerto" | cut -d'/' -f1
 }
 extraer_usuario() {
-    local key="$1"   
+    local key="$1"
     local datos=$(desofus "$key")
     if [ -z "$datos" ]; then
         echo ""
@@ -78,22 +76,48 @@ extraer_usuario() {
     fi
     echo "$datos" | rev | cut -d'/' -f1 | rev
 }
-# BUGFIX: IP duplicada e inutilizada — se usa MYIP mas adelante, esta era redundante
+export IP=$( curl -sS ipinfo.io/ip 2>/dev/null )
 clear
 if [ -f "/etc/xray/domain" ]; then
-# Ya instalado — abrir panel directamente
+echo -e "[ ${YELLOW}DETECTADO ] ${BIBlue}Script ya Instalado"
+echo -ne "[ ${RED}ATENCION ] ${BIBlue}¿Quieres Reinstalar tu S.O? ? (y/n)? "
+read answer
+if [ "$answer" == "${answer#[Yy]}" ] ;then
+# Abrir panel directamente
 if [ -f /usr/local/bin/sbg-panel ]; then
     exec bash /usr/local/bin/sbg-panel
 else
-    # Descargar panel si no existe
     wget -q --timeout=30 "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg-panel.sh" \
         -O /usr/local/bin/sbg-panel 2>/dev/null && chmod +x /usr/local/bin/sbg-panel
     [ -f /usr/local/bin/sbg-panel ] && exec bash /usr/local/bin/sbg-panel
 fi
 exit 0
+else
+echo -e "${BIBlue}╭═══════════════════════════════════════════╮${NC}"
+echo -e "${BIBlue}│\e[1;32m Seleccione Opcion para Reinstalar su S.O  ${BIBlue}│${NC}"
+echo -e "${BIBlue}╰═══════════════════════════════════════════╯${NC}"
+echo -e "${BIBlue}╭═══════════════════════════════════════════╮${NC}"
+echo -e "${BIBlue}│  [ 1 ]  \e[1;32mReinstalar S.O Debian 10             ${NC}"
+echo -e "${BIBlue}│  [ 2 ]  \e[1;32mReinstalar S.O Debian 11             ${NC}"
+echo -e "${BIBlue}│  [ 3 ]  \e[1;32mReinstalar S.O Debian 12             ${NC}"
+echo -e "${BIBlue}│  [ 4 ]  \e[1;32mReinstalar S.O Debian 13             ${NC}"
+echo -e "${BIBlue}│  [ 5 ]  \e[1;32mReinstalar S.O Ubuntu 18.04          ${NC}"
+echo -e "${BIBlue}│  [ 6 ]  \e[1;32mReinstalar S.O Ubuntu 20.04          ${NC}"
+echo -e "${BIBlue}│  [ 7 ]  \e[1;32mReinstalar S.O Ubuntu 22.04          ${NC}"
+echo -e "${BIBlue}│  [ 8 ]  \e[1;32mReinstalar S.O Ubuntu 24.04          ${NC}"
+echo -e "${BIBlue}│  [ 9 ]  \e[1;32mReinstalar S.O Ubuntu 25.04          ${NC}"
+echo -e "${BIBlue}╰═══════════════════════════════════════════╯${NC}"
+until [[ $so =~ ^[1-9]+$ ]]; do
+read -p "   Por Favor Selecciona del 1 al 9 : " so
+done
+echo -e "${RED}Reinstalacion de SO no disponible en esta version.${NC}"
+echo -e "${YELLOW}Para reinstalar el SO hazlo manualmente desde tu panel VPS.${NC}"
+exit
 fi
-# BUGFIX: check de --SBG removido junto con la verificacion de KEY
-sleep 1 && clear
+fi
+[[ "$1" == '--SBG' ]] && echo -e " ${YELLOW}ESPERA UN MOMENTO $1" > /dev/null 2>&1 && sleep 1 && clear || {
+exit&&exit
+}
 rm -rf /root/sbg.sh
 clear
 echo -e "  ${BIBlue}╭══════════════════════════════════════╮${NC}"
@@ -305,7 +329,6 @@ apt update -y
 [[ $(grep -c "#PermitRootLogin" /etc/ssh/sshd_config) != '0' ]] && {
     sed -i "s/#PermitRootLogin/PermitRootLogin/g" /etc/ssh/sshd_config
 } > /dev/null
-# BUGFIX: usar >> en lugar de > para no sobreescribir todo el sshd_config
 [[ $(grep -c "PasswordAuthentication" /etc/ssh/sshd_config) = '0' ]] && {
     echo 'PasswordAuthentication yes' >> /etc/ssh/sshd_config
 } > /dev/null
@@ -315,12 +338,9 @@ apt update -y
 [[ $(grep -c "#PasswordAuthentication no" /etc/ssh/sshd_config) != '0' ]] && {
     sed -i "s/#PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
 } > /dev/null
-# BUGFIX: solo modificar el archivo cloud si existe (no existe en sistemas viejos)
-[ -f /etc/ssh/sshd_config.d/60-cloudimg-settings.conf ] && \
-    sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config.d/60-cloudimg-settings.conf 2>/dev/null
+sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config.d/60-cloudimg-settings.conf 2>/dev/null
 service ssh restart > /dev/null
 iptables -F
-# BUGFIX: agregar puerto 22 (SSH) — antes faltaba y bloqueaba la conexion
 iptables -A INPUT -p tcp --dport 22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 81 -j ACCEPT
 iptables -A INPUT -p tcp --dport 80 -j ACCEPT
@@ -356,7 +376,7 @@ if [ "$(systemd-detect-virt)" == "openvz" ]; then
         exit 1
 fi
 clear
-###### IZIN SC 
+###### IZIN SC
 rm -rf /etc/profil
 rm -rf /usr/bin/profil2
 rm -rf /etc/profil*
@@ -379,20 +399,15 @@ function SBG () {
 # Verificacion de KEY desactivada — funciona 100% local
 MYIP_TMP=$(curl -s ipv4.icanhazip.com 2>/dev/null || curl -s ifconfig.me 2>/dev/null || hostname -I | awk '{print $1}')
 Key="LOCAL"
-# BUGFIX: usar IP local del VPS en vendor_codes, no la del servidor SBG externo
 IP_REAL="${MYIP_TMP}"
 echo "${IP_REAL}" > /usr/bin/vendor_codes
 echo "${MYIP_TMP}" > /usr/bin/vendor_code
 echo "${Key}" > /usr/bin/kelly
 }
 SBG
-cd /root
-# BUGFIX: crear profil2 y cred directamente — install.zip original ya no esta disponible
+# Crear archivos de credenciales directamente (reemplaza install.zip)
 echo "SOCRATES SBG" > /usr/bin/profil2
 echo "KEY DE JerrySBG!" > /usr/bin/cred
-chmod +x /usr/bin/profil2 /usr/bin/cred 2>/dev/null
-# Limpiar cualquier sbg2.sh previo (puede ser el binario Nim original que falla)
-rm -f /root/sbg2.sh 2>/dev/null
 clear
 checking_sc() {
 clear
@@ -402,10 +417,10 @@ padding=$(((cols - ${#text}) / 2))
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
 echo -ne "\033[38;5;15;48;5;208m$(printf "%*s" $padding)${text}$(printf "%*s" $padding)\033[0m"
 echo " "
-echo -e "\e[1;33m RESELLER: $(cat /usr/bin/profil2 2>/dev/null || echo 'SBG') ${purple}VERIFICADO \e[0m" | pv -qL 10
-echo -e "\e[1;33m KEY SCRIP: $(cat /usr/bin/cred 2>/dev/null || echo 'LOCAL') ${purple}VERIFICADO \e[0m" | pv -qL 10
+echo -e "\e[1;33m RESELLER: $(cat /usr/bin/profil2 2>/dev/null || echo 'SOCRATES SBG') ${purple}VERIFICADO \e[0m" | pv -qL 10
+echo -e "\e[1;33m KEY SCRIP: $(cat /usr/bin/cred 2>/dev/null || echo 'KEY DE JerrySBG!') ${purple}VERIFICADO \e[0m" | pv -qL 10
 echo -e "              ${RED}PERMISO CONCEDIDO${NC}"
-echo -e "   \033[0;33mTu IP fue Autorizado Exitosamente.${NC}"
+echo -e "   \033[0;33mTu IP fue Autorizado Exitosamente.\033[0m"
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
 sleep 1
 }
@@ -417,17 +432,19 @@ rm -f /var/lib/dpkg/lock*
 rm -f /var/lib/apt/lists/lock
 rm -f /var/cache/apt/archives/lock
 dpkg --configure -a 2>/dev/null
-# Descargar sbg2.sh desde GitHub (siempre fresco — nunca usar binario previo)
-echo -e "  ${YELLOW}Descargando instalador VPN desde GitHub...${NC}"
+# Descargar sbg2.sh desde GitHub (siempre fresco)
+rm -f /root/sbg2.sh 2>/dev/null
+echo -e "${YELLOW}📥 Descargando instalador VPN...${NC}"
 wget -q --timeout=60 --tries=3 \
     "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2.sh" \
     -O /root/sbg2.sh 2>/dev/null
-# Verificar que no sea el binario Nim (debe ser texto/bash)
-if file /root/sbg2.sh 2>/dev/null | grep -q "ELF"; then
-    rm -f /root/sbg2.sh
-    echo -e "  ${RED}Error: sbg2.sh descargado es binario, reintentando...${NC}"
-    wget --timeout=60 --tries=3 \
-        "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2.sh" \
-        -O /root/sbg2.sh 2>/dev/null
+if [ ! -f /root/sbg2.sh ] || [ ! -s /root/sbg2.sh ]; then
+    echo -e "${RED}✖ Error descargando sbg2.sh desde GitHub${NC}"
+    exit 1
 fi
-[ -f /root/sbg2.sh ] && chmod +x /root/sbg2.sh && bash /root/sbg2.sh --BySBG
+if file /root/sbg2.sh 2>/dev/null | grep -q "ELF"; then
+    echo -e "${RED}✖ sbg2.sh descargado es binario ELF. Verifica el repo.${NC}"
+    rm -f /root/sbg2.sh
+    exit 1
+fi
+chmod +x /root/sbg2.sh && bash /root/sbg2.sh --BySBG
