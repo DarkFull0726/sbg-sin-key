@@ -79,40 +79,31 @@ extraer_usuario() {
 export IP=$( curl -sS ipinfo.io/ip 2>/dev/null )
 clear
 if [ -f "/etc/xray/domain" ]; then
-echo -e "[ ${YELLOW}DETECTADO ] ${BIBlue}Script ya Instalado"
-echo -ne "[ ${RED}ATENCION ] ${BIBlue}¿Quieres Reinstalar tu S.O? ? (y/n)? "
-read answer
-if [ "$answer" == "${answer#[Yy]}" ] ;then
-# Abrir panel directamente
-if [ -f /usr/local/bin/sbg-panel ]; then
-    exec bash /usr/local/bin/sbg-panel
-else
-    wget -q --timeout=30 "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg-panel.sh" \
-        -O /usr/local/bin/sbg-panel 2>/dev/null && chmod +x /usr/local/bin/sbg-panel
-    [ -f /usr/local/bin/sbg-panel ] && exec bash /usr/local/bin/sbg-panel
-fi
-exit 0
-else
+clear
 echo -e "${BIBlue}╭═══════════════════════════════════════════╮${NC}"
-echo -e "${BIBlue}│\e[1;32m Seleccione Opcion para Reinstalar su S.O  ${BIBlue}│${NC}"
+echo -e "${BIBlue}│  [ ${YELLOW}DETECTADO${BIBlue} ] Script ya Instalado         │${NC}"
 echo -e "${BIBlue}╰═══════════════════════════════════════════╯${NC}"
 echo -e "${BIBlue}╭═══════════════════════════════════════════╮${NC}"
-echo -e "${BIBlue}│  [ 1 ]  \e[1;32mReinstalar S.O Debian 10             ${NC}"
-echo -e "${BIBlue}│  [ 2 ]  \e[1;32mReinstalar S.O Debian 11             ${NC}"
-echo -e "${BIBlue}│  [ 3 ]  \e[1;32mReinstalar S.O Debian 12             ${NC}"
-echo -e "${BIBlue}│  [ 4 ]  \e[1;32mReinstalar S.O Debian 13             ${NC}"
-echo -e "${BIBlue}│  [ 5 ]  \e[1;32mReinstalar S.O Ubuntu 18.04          ${NC}"
-echo -e "${BIBlue}│  [ 6 ]  \e[1;32mReinstalar S.O Ubuntu 20.04          ${NC}"
-echo -e "${BIBlue}│  [ 7 ]  \e[1;32mReinstalar S.O Ubuntu 22.04          ${NC}"
-echo -e "${BIBlue}│  [ 8 ]  \e[1;32mReinstalar S.O Ubuntu 24.04          ${NC}"
-echo -e "${BIBlue}│  [ 9 ]  \e[1;32mReinstalar S.O Ubuntu 25.04          ${NC}"
+echo -e "${BIBlue}│  [ ${GREEN}1${BIBlue} ]  Abrir Panel SBG                   │${NC}"
+echo -e "${BIBlue}│  [ ${GREEN}2${BIBlue} ]  Reinstalar Script VPN             │${NC}"
+echo -e "${BIBlue}│  [ ${GREEN}3${BIBlue} ]  Salir                             │${NC}"
 echo -e "${BIBlue}╰═══════════════════════════════════════════╯${NC}"
-until [[ $so =~ ^[1-9]+$ ]]; do
-read -p "   Por Favor Selecciona del 1 al 9 : " so
-done
-echo -e "${RED}Reinstalacion de SO no disponible en esta version.${NC}"
-echo -e "${YELLOW}Para reinstalar el SO hazlo manualmente desde tu panel VPS.${NC}"
-exit
+read -p "   Selecciona opcion [1-3]: " op_ins
+if [[ $op_ins == "1" ]]; then
+    if command -v menu >/dev/null 2>&1; then
+        exec menu
+    elif [ -f /usr/local/sbin/menu ]; then
+        exec bash /usr/local/sbin/menu
+    else
+        echo -e "${RED}Panel no encontrado. Intenta reinstalar el script (opcion 2).${NC}"
+        sleep 3
+    fi
+    exit 0
+elif [[ $op_ins == "2" ]]; then
+    echo -e "${YELLOW}Reinstalando script VPN...${NC}"
+    # Continua con la instalacion
+else
+    exit 0
 fi
 fi
 [[ "$1" == '--SBG' ]] && echo -e " ${YELLOW}ESPERA UN MOMENTO $1" > /dev/null 2>&1 && sleep 1 && clear || {
