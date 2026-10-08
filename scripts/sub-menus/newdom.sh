@@ -80,34 +80,34 @@ echo -e "\033[0;33m]\033[1;37m -\033[1;32m CON EXITO !\033[1;37m"
 tput cnorm
 }
 res1() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom.sh && chmod +x dom.sh && ./dom.sh
-rm -rf dom.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res2() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom2.sh && chmod +x dom2.sh && ./dom2.sh
-rm -rf dom2.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res3() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom3.sh && chmod +x dom3.sh && ./dom3.sh
-rm -rf dom3.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res4() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom4.sh && chmod +x dom4.sh && ./dom4.sh
-rm -rf dom4.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res5() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom5.sh && chmod +x dom5.sh && ./dom5.sh
-rm -rf dom5.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res6() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom6.sh && chmod +x dom6.sh && ./dom6.sh
-rm -rf dom6.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 dom=$( cat /etc/xray/domain)
 echo $dom > /root/dom

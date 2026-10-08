@@ -56,10 +56,7 @@ WH='\033[1;37m'
 ipsaya=$(wget -qO- ipinfo.io/ip)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/JerrySBG/permission/main/ip"
-checking_sc() {
-clear
-}
+checking_sc() { clear }
 echo -e "${COLOR1}│             \033[0;32mTELEGRAM: @Jerry_SBG ${NC}               ${COLOR1}│"
 echo -e "${COLOR1}│             \033[0;32mWHATSAPP: 0529241293310 ${NC}            ${COLOR1}│"
 echo -e "${COLOR1}└─────────────────────────────────────────────────┘${NC}"
@@ -117,20 +114,7 @@ WH='\033[1;37m'
 ipsaya=$(wget -qO- ipinfo.io/ip)
 data_server=$(curl -v --insecure --silent https://google.com/ 2>&1 | grep Date | sed -e 's/< Date: //')
 date_list=$(date +"%Y-%m-%d" -d "$data_server")
-data_ip="https://raw.githubusercontent.com/JerrySBG/permission/main/ip"
-checking_sc() {
-useexp=$(curl -sS $data_ip | grep $ipsaya | awk '{print $3}')
-if [[ $date_list < $useexp ]]; then
-echo -ne
-else
-systemctl stop nginx
-echo -e "${COLOR1}┌─────────────────────────────────────────────────┐${NC}"
-echo -e "${COLOR1}│${NC}${COLBG1}          ${WH}• AUTOSCRIPT PREMIUM •                 ${NC}${COLOR1}│ $NC"
-echo -e "${COLOR1}└─────────────────────────────────────────────────┘${NC}"
-echo -e "${COLOR1}┌─────────────────────────────────────────────────┐${NC}"
-echo -e "${COLOR1}│             ${RED}PERMISO DENEGADO !${NC}                  ${COLOR1}│"
-echo -e "${COLOR1}│   \033[0;33mTU VPS${NC} $ipsaya \033[0;36mACABA DE SER BANEADA${NC}      ${COLOR1}│"
-echo -e "${COLOR1}│     \033[0;33m}COMPRA ACCESO AL SCRIPT POR FAVOR ${NC}          ${COLOR1}│"
+checking_sc() { clear }COMPRA ACCESO AL SCRIPT POR FAVOR ${NC}          ${COLOR1}│"
 echo -e "${COLOR1}│             \033[0;32mTELEGRAM: @Jerry_SBG ${NC}               ${COLOR1}│"
 echo -e "${COLOR1}│             \033[0;32mWHATSAPP: 0529241293310 ${NC}            ${COLOR1}│"
 echo -e "${COLOR1}└─────────────────────────────────────────────────┘${NC}"

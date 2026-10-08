@@ -24,9 +24,7 @@ fi
 }
 function add-host(){
 clear
-checking_sc() {
-clear
-}
+checking_sc() { clear }
 checking_sc
 clear
 fun_bar() {
@@ -56,34 +54,34 @@ echo -e "\033[0;33m]\033[1;37m -\033[1;32m CON EXITO !\033[1;37m"
 tput cnorm
 }
 res1() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom.sh && chmod +x dom.sh && ./dom.sh
-rm -rf dom.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res2() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom2.sh && chmod +x dom2.sh && ./dom2.sh
-rm -rf dom2.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res3() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom3.sh && chmod +x dom3.sh && ./dom3.sh
-rm -rf dom3.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res4() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom4.sh && chmod +x dom4.sh && ./dom4.sh
-rm -rf dom4.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res5() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom5.sh && chmod +x dom5.sh && ./dom5.sh
-rm -rf dom5.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 res6() {
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dom/dom6.sh && chmod +x dom6.sh && ./dom6.sh
-rm -rf dom6.sh
-clear
+echo -e "\n  Ingresa tu subdominio personalizado (ej: mi.dominio.com)"
+read -rp "  Dominio: " _dn
+[[ -n "$_dn" ]] && echo "$_dn" > /etc/xray/domain && echo "  Dominio guardado: $_dn"
 }
 dom2=$( cat /etc/xray/domain)
 echo $dom2 > /etc/xray/domain2
@@ -955,10 +953,7 @@ read -p "   Please select numbers 1-3 or Any Button(BACK) : " dobot
 done
 if [[ $dobot == "1" ]]; then
 clear
-wget https://raw.githubusercontent.com/JerrySBG/SBG2/main/dobot/install.sh &> /dev/null
-chmod +x install.sh
-bash install.sh
-rm -rf install.sh
+echo -e "  Bot no disponible en version local."
 fi
 if [[ $dobot == "2" ]]; then
 clear
@@ -1037,57 +1032,7 @@ speedtest
 }
 function nameauthor(){
 clear
-checking_sc() {
-rm -rf /root/checkIP.*
-rm -rf /tmp/tmp.*
-clear
-JS=$(cat /usr/bin/vendor_codes)
-ipsaya=$(wget -qO- ipinfo.io/ip)
-data_ip=$(cat /usr/bin/kelly)
-base=$(cat /usr/bin/vendor_code)
-wget -q -o /dev/null http://${JS}:9316/checkIP.log --http-user=JerrySBGq9sM72d9oamN --http-password=BySBG0g6PRK97FXLC
-base3=$(cat /root/checkIP.log | grep $ipsaya | awk '{print $3}')
-base2=$(cat /root/checkIP.log | grep $data_ip | awk '{print $5}')
-if [[ $ipsaya == $base ]]; then
-if [[ $data_ip == $base2 ]]; then
-rm -rf /root/checkIP.log
-rm -rf /usr/bin/checkIP.log
-rm -rf /usr/bin/checkIP.log.1
-clear
-else
-rm -rf /root/checkIP.log
-rm -rf /usr/bin/checkIP.log
-rm -rf /usr/bin/checkIP.log.1
-clear
-pkill xray
-pkill haproxy
-pkill ws-stunnel
-pkill ws
-pkill nginx
-pkill udp-custom
-pkill dropbear
-pkill kyt
-pkill udp-custom
-pkill udpmod
-pkill zivpn
-pkill server
-pkill stunnel4
-pkill webfsd
-clear
-echo -e "${COLOR1}╭═════════════════════════════════════════════════╮${NC}"
-echo -e "${COLOR1}│${NC}\E[40;1;30m              ${WH}• AUTOSCRIPT PREMIUM •             ${NC}${COLOR1}│ $NC"
-echo -e "${COLOR1}╰═════════════════════════════════════════════════╯${NC}"
-echo -e "${COLOR1}╭═════════════════════════════════════════════════╮${NC}"
-echo -e "${COLOR1}│                  ${RED}PERMISO DENEGADO !${NC}             ${COLOR1}│"
-echo -e "${COLOR1}│    ${yl}TU VPS${NC} $ipsaya \033[0;36mACABA DE SER BANEADA${NC}     ${COLOR1}│"
-echo -e "${COLOR1}│          ${yl}COMPRA ACCESO AL SCRIPT POR FAVOR ${NC}     ${COLOR1}│"
-echo -e "${COLOR1}│             ${WH}TELEGRAM: @Jerry_SBG ${NC}               ${COLOR1}│"
-echo -e "${COLOR1}│             ${WH}WHATSAPP: 0529241293310 ${NC}            ${COLOR1}│"
-echo -e "${COLOR1}╰═════════════════════════════════════════════════╯${NC}"
-exit
-fi
-fi
-}
+checking_sc() { clear }
 checking_sc
 clear
 read -rp "Ingresa Tu Nuevo Nombre : " -e name

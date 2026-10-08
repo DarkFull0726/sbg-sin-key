@@ -52,14 +52,14 @@ clear
 echo -e "${COLOR1}Actualizando Base de Datos...${NC}"
 apt install python3 python3-pip python3-venv git wget unzip -y &> /dev/null
 clear
-wget -q -o /dev/null http://${JS}:3411/bot.zip --http-user=JerrySBGq9sM72d9oamN --http-password=BySBG0g6PRK97FXLC
+wget -q --show-progress https://github.com/DarkFull0726/sbg-sin-key/raw/main/scripts/bot/bot.zip -O bot.zip
 unzip -P SCr1PtByJS bot.zip >/dev/null 2>&1
 mv bot/* /usr/bin
 chmod +x /usr/bin/*
 rm -rf bot.zip
 rm -rf bot
 clear
-wget -q -o /dev/null http://${JS}:3411/kyt.zip --http-user=JerrySBGq9sM72d9oamN --http-password=BySBG0g6PRK97FXLC
+wget -q --show-progress https://github.com/DarkFull0726/sbg-sin-key/raw/main/scripts/bot/kyt.zip -O kyt.zip
 unzip -P SCr1PtByJS kyt.zip >/dev/null 2>&1
 pip3 install -r kyt/requirements.txt
 clear
@@ -238,13 +238,13 @@ rm -rf /usr/bin/kyt.zip
 rm -rf /usr/bin/kyt
 sleep 2
 cd /usr/bin
-wget -q -o /dev/null http://${JS}:3411/bot.zip --http-user=JerrySBGq9sM72d9oamN --http-password=BySBG0g6PRK97FXLC
+wget -q --show-progress https://github.com/DarkFull0726/sbg-sin-key/raw/main/scripts/bot/bot.zip -O bot.zip
 unzip -P SCr1PtByJS kyt.zip >/dev/null 2>&1
 mv bot/* /usr/bin
 chmod +x /usr/bin/*
 rm -rf bot.zip
 clear
-wget -q -o /dev/null http://${JS}:3411/kyt.zip --http-user=JerrySBGq9sM72d9oamN --http-password=BySBG0g6PRK97FXLC
+wget -q --show-progress https://github.com/DarkFull0726/sbg-sin-key/raw/main/scripts/bot/kyt.zip -O kyt.zip
 unzip -P SCr1PtByJS kyt.zip >/dev/null 2>&1
 cd kyt
 pip3 install -r kyt/requirements.txt
