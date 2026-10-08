@@ -447,7 +447,7 @@ iptables -t nat -D PREROUTING 1
 iptables -t nat -D PREROUTING 1
 iptables -t nat -D PREROUTING 1
 iptables -t nat -D PREROUTING 1
-cp /root/SBG/udp/udp-custom.sh . 2>/dev/null || wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/SBG/udp/udp-custom.sh 2>/dev/null
+wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/udp/udp-custom.sh -O udp-custom.sh 2>/dev/null
 chmod +x udp-custom.sh && ./udp-custom.sh
 rm -rf udp-custom.sh
 clear
@@ -529,15 +529,16 @@ if [[ $udp == "4" ]]; then
 setupmod
 fi
 if [[ $udp == "5" ]]; then
-echo -e "    ${RED}ZiVPN no disponible en version local sin servidor SBG"
-sleep 2
+wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/zivpn/ziv2.sh -O ziv2.sh 2>/dev/null
+chmod +x ziv2.sh && ./ziv2.sh
+rm -rf ziv2.sh
 setupudp2
 fi
 if [[ $udp == "6" ]]; then
 clear
-echo -e "    ${RED}Desinstalador ZiVPN no disponible en version local"
-sleep 2
-setupudp2
+wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/zivpn/uninstall.sh -O uninstall.sh 2>/dev/null
+chmod +x uninstall.sh && ./uninstall.sh
+rm -rf uninstall.sh
 clear
 echo -e "    ${RED}Desintalado Correctamente ZIVPN"
 sleep 1
@@ -546,9 +547,9 @@ fi
 if [[ $udp == "7" ]]; then
 clear
 if [ ! -e /root/UDPMOD ]; then
-echo -e "    ${RED}Hysteria no disponible en version local sin servidor SBG"
-sleep 2
-setupmod
+wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/UDPMOD/install.sh -O install.sh 2>/dev/null
+chmod +x install.sh && ./install.sh
+rm -rf install.sh
 #setupudp2
 setupmod
 else
@@ -760,9 +761,9 @@ setupudp2
 function setupslow(){
 if [ ! -f /etc/slowdns/dnstt-server ]; then
 rm -rf /etc/slowdns
-echo -e "    ${RED}SlowDNS no disponible en version local sin servidor SBG"
-sleep 2
-menu
+wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/slowdns/installsl.sh -O installsl.sh 2>/dev/null
+chmod +x installsl.sh && ./installsl.sh
+rm -rf installsl.sh
 else
 slo=$( systemctl status server | grep Active | awk '{print $3}' | cut -d "(" -f2 | cut -d ")" -f1)
 if [[ $slo == "running" ]]; then
