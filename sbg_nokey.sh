@@ -106,9 +106,7 @@ else
     exit 0
 fi
 fi
-[[ "$1" == '--SBG' ]] && echo -e " ${YELLOW}ESPERA UN MOMENTO $1" > /dev/null 2>&1 && sleep 1 && clear || {
-exit&&exit
-}
+clear
 rm -rf /root/sbg.sh
 clear
 echo -e "  ${BIBlue}╭══════════════════════════════════════╮${NC}"
