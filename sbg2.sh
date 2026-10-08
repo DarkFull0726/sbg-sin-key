@@ -22,7 +22,8 @@ sleep 1
 MYIP=$(curl -s ipv4.icanhazip.com 2>/dev/null || curl -s ifconfig.me 2>/dev/null || hostname -I | awk '{print $1}')
 UUID=$(cat /proc/sys/kernel/random/uuid 2>/dev/null || python3 -c "import uuid; print(uuid.uuid4())")
 
-echo "${MYIP}" > /etc/xray/domain 2>/dev/null || true
+mkdir -p /etc/xray
+echo "${MYIP}" > /etc/xray/domain
 
 # ─── APT PACKAGES ────────────────────────────────────────────────────────────
 echo -e "${YELLOW}[1/8]${NC} Instalando paquetes..."
