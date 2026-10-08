@@ -81,37 +81,16 @@ extraer_usuario() {
 # BUGFIX: IP duplicada e inutilizada — se usa MYIP mas adelante, esta era redundante
 clear
 if [ -f "/etc/xray/domain" ]; then
-echo -e "[ ${YELLOW}DETECTADO ] ${BIBlue}Script ya Instalado"
-echo -ne "[ ${RED}ATENCION ] ${BIBlue}¿Quieres Reinstalar tu S.O? ? (y/n)? "
-read answer
-if [ "$answer" == "${answer#[Yy]}" ] ;then
-echo -e "[ ${YELLOW}INFORMACION${NC} ] ${BLUE}PARA DISFRUTAR DE MI SCRIPT REINSTALA TU VPS"
-exit 0
+# Ya instalado — abrir panel directamente
+if [ -f /usr/local/bin/sbg-panel ]; then
+    exec bash /usr/local/bin/sbg-panel
 else
-echo -e "${BIBlue}╭═══════════════════════════════════════════╮${NC}"
-echo -e "${BIBlue}│\e[1;32m Seleccione Opcion para Reinstalar su S.O  ${BIBlue}│${NC}"
-echo -e "${BIBlue}╰═══════════════════════════════════════════╯${NC}"
-echo -e "${BIBlue}╭═══════════════════════════════════════════╮${NC}"
-echo -e "${BIBlue}│  [ 1 ]  \e[1;32mReinstalar S.O Debian 10             ${NC}"  
-echo -e "${BIBlue}│  [ 2 ]  \e[1;32mReinstalar S.O Debian 11             ${NC}" 
-echo -e "${BIBlue}│  [ 3 ]  \e[1;32mReinstalar S.O Debian 12             ${NC}"
-echo -e "${BIBlue}│  [ 4 ]  \e[1;32mReinstalar S.O Debian 13             ${NC}"
-echo -e "${BIBlue}│  [ 5 ]  \e[1;32mReinstalar S.O Ubuntu 18.04          ${NC}"  
-echo -e "${BIBlue}│  [ 6 ]  \e[1;32mReinstalar S.O Ubuntu 20.04          ${NC}"  
-echo -e "${BIBlue}│  [ 7 ]  \e[1;32mReinstalar S.O Ubuntu 22.04          ${NC}"  
-echo -e "${BIBlue}│  [ 8 ]  \e[1;32mReinstalar S.O Ubuntu 24.04          ${NC}"  
-echo -e "${BIBlue}│  [ 9 ]  \e[1;32mReinstalar S.O Ubuntu 25.04          ${NC}"                                       
-echo -e "${BIBlue}╰═══════════════════════════════════════════╯${NC}"
-until [[ $so =~ ^[1-9]+$ ]]; do 
-read -p "   Por Favor Selecciona del 1 al 9 : " so
-done
-# BUGFIX: Reinstalar S.O usa server externo SBG — reemplazado por mensaje local
-# Para reinstalar el S.O usa el panel de tu proveedor de VPS directamente.
-echo -e "[ ${RED}INFO${NC} ] ${BLUE}Para reinstalar el S.O usa el panel de control de tu VPS."
-echo -e "[ ${YELLOW}NOTA${NC} ] ${BLUE}Esta funcion requeria servidor externo (SBG) que ya no esta disponible."
-exit 0
-exit
+    # Descargar panel si no existe
+    wget -q --timeout=30 "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg-panel.sh" \
+        -O /usr/local/bin/sbg-panel 2>/dev/null && chmod +x /usr/local/bin/sbg-panel
+    [ -f /usr/local/bin/sbg-panel ] && exec bash /usr/local/bin/sbg-panel
 fi
+exit 0
 fi
 # BUGFIX: check de --SBG removido junto con la verificacion de KEY
 sleep 1 && clear

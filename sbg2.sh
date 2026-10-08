@@ -800,25 +800,12 @@ systemctl restart openvpn@server 2>/dev/null && \
 
 systemctl restart ssh 2>/dev/null || service ssh restart 2>/dev/null
 
-# ─── MENU ────────────────────────────────────────────────────────────────────
-# Crear acceso al menu si no existe
-if [ ! -f /usr/local/bin/menu ]; then
-    cat > /usr/local/bin/menu << 'MENUEOF'
-#!/bin/bash
-echo ""
-echo "  SBG VPN Server"
-echo "  IP: $(cat /usr/bin/vendor_codes 2>/dev/null || hostname -I | awk '{print $1}')"
-echo "  UUID Xray: $(cat /etc/xray/token 2>/dev/null)"
-echo ""
-echo "  Servicios activos:"
-for svc in xray ws ssh-ws-internal ws-proxy badvpn1 dropbear_custom openvpn@server; do
-    status=$(systemctl is-active "$svc" 2>/dev/null)
-    [ "$status" = "active" ] && echo "  ✅ $svc" || echo "  ✖ $svc"
-done
-echo ""
-MENUEOF
-    chmod +x /usr/local/bin/menu
-fi
+# ─── PANEL ───────────────────────────────────────────────────────────────────
+# Descargar e instalar el panel SBG
+wget -q --timeout=30 \
+    "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg-panel.sh" \
+    -O /usr/local/bin/sbg-panel 2>/dev/null && chmod +x /usr/local/bin/sbg-panel
+ln -sf /usr/local/bin/sbg-panel /usr/local/bin/menu 2>/dev/null
 
 # ─── FINALIZAR ───────────────────────────────────────────────────────────────
 clear
@@ -830,12 +817,12 @@ echo -e "  ${GREEN}IP del servidor:${NC} ${MYIP}"
 echo -e "  ${GREEN}UUID Xray:${NC}       ${UUID}"
 echo ""
 echo -e "  ${YELLOW}Puertos activos:${NC}"
-echo -e "  SSH     : 22"
-echo -e "  Dropbear: 90, 109, 143"
+echo -e "  SSH     : 22, 90, 109, 143"
 echo -e "  WS Proxy: 80, 701"
-echo -e "  Xray    : a través de nginx/443"
-echo -e "  BadVPN  : 7300"
-echo -e "  OpenVPN : 1194"
+echo -e "  BadVPN  : 7300 (UDP)"
+echo -e "  OpenVPN : 1194 (UDP)"
 echo ""
-echo -e "  Escribe ${GREEN}menu${NC} para ver el panel"
+echo -e "  Escribe ${GREEN}menu${NC} para abrir el panel de administracion"
 echo ""
+sleep 3
+exec bash /usr/local/bin/sbg-panel
