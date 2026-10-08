@@ -407,20 +407,13 @@ echo "${MYIP_TMP}" > /usr/bin/vendor_code
 echo "${Key}" > /usr/bin/kelly
 }
 SBG
-# BUGFIX: usar rutas absolutas — antes fallaba si el cwd no era /root
 cd /root
-# Descargar install.zip desde GitHub si no está presente
-if [ ! -f /root/install.zip ]; then
-    echo -e "  ${YELLOW}Descargando archivos desde GitHub...${NC}"
-    wget -q --timeout=30 --tries=3 "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/install.zip" -O /root/install.zip 2>/dev/null
-fi
-unzip -o /root/install.zip -d /root >/dev/null 2>&1
-[ -f /root/menu_credito ] && mv /root/menu_credito /usr/bin/profil2
-[ -f /root/obfs ]         && mv /root/obfs /usr/bin/obfs
-[ -f /root/idtg ]         && mv /root/idtg /usr/bin/idtg
-[ -f /root/tg ]           && mv /root/tg /usr/bin/tg
-[ -f /root/ke ]           && mv /root/ke /usr/bin/cred
-rm -f /root/install.zip 2>/dev/null
+# BUGFIX: crear profil2 y cred directamente — install.zip original ya no esta disponible
+echo "SOCRATES SBG" > /usr/bin/profil2
+echo "KEY DE JerrySBG!" > /usr/bin/cred
+chmod +x /usr/bin/profil2 /usr/bin/cred 2>/dev/null
+# Limpiar cualquier sbg2.sh previo (puede ser el binario Nim original que falla)
+rm -f /root/sbg2.sh 2>/dev/null
 clear
 checking_sc() {
 clear
@@ -430,8 +423,8 @@ padding=$(((cols - ${#text}) / 2))
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
 echo -ne "\033[38;5;15;48;5;208m$(printf "%*s" $padding)${text}$(printf "%*s" $padding)\033[0m"
 echo " "
-echo -e "\e[1;33m RESELLER: $(awk '{printf "%0s\n", $0}' /usr/bin/profil2) ${purple}VERIFICADO \e[0m" | pv -qL 10
-echo -e "\e[1;33m KEY SCRIP: $(awk '{printf "%0s\n", $0}' /usr/bin/cred) ${purple}VERIFICADO \e[0m" | pv -qL 10
+echo -e "\e[1;33m RESELLER: $(cat /usr/bin/profil2 2>/dev/null || echo 'SBG') ${purple}VERIFICADO \e[0m" | pv -qL 10
+echo -e "\e[1;33m KEY SCRIP: $(cat /usr/bin/cred 2>/dev/null || echo 'LOCAL') ${purple}VERIFICADO \e[0m" | pv -qL 10
 echo -e "              ${RED}PERMISO CONCEDIDO${NC}"
 echo -e "   \033[0;33mTu IP fue Autorizado Exitosamente.${NC}"
 echo -e "\033[1;93m────────────────────────────────────────────\033[0m"
@@ -445,12 +438,18 @@ rm -f /var/lib/dpkg/lock*
 rm -f /var/lib/apt/lists/lock
 rm -f /var/cache/apt/archives/lock
 dpkg --configure -a 2>/dev/null
-# Descargar sbg2.sh desde GitHub si no esta presente
-if [ ! -f /root/sbg2.sh ]; then
-    echo -e "  ${YELLOW}Descargando instalador VPN desde GitHub...${NC}"
-    wget -q --timeout=60 --tries=3 \
+# Descargar sbg2.sh desde GitHub (siempre fresco — nunca usar binario previo)
+echo -e "  ${YELLOW}Descargando instalador VPN desde GitHub...${NC}"
+wget -q --timeout=60 --tries=3 \
+    "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2.sh" \
+    -O /root/sbg2.sh 2>/dev/null
+# Verificar que no sea el binario Nim (debe ser texto/bash)
+if file /root/sbg2.sh 2>/dev/null | grep -q "ELF"; then
+    rm -f /root/sbg2.sh
+    echo -e "  ${RED}Error: sbg2.sh descargado es binario, reintentando...${NC}"
+    wget --timeout=60 --tries=3 \
         "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2.sh" \
         -O /root/sbg2.sh 2>/dev/null
 fi
-[ -f /root/sbg2.sh ] && chmod +x /root/sbg2.sh && /root/sbg2.sh --BySBG
+[ -f /root/sbg2.sh ] && chmod +x /root/sbg2.sh && bash /root/sbg2.sh --BySBG
 clear
