@@ -16,7 +16,7 @@ read -rp "Link File: " -e url
 cd
 mkdir -p /root/backup
 wget -O backup.zip "$url"
-unzip backup.zip  &> /dev/null
+unzip -o backup.zip  &> /dev/null
 rm -f backup.zip
 sleep 1
 echo Start Restore
@@ -72,7 +72,7 @@ read -rp "Link del Archivo: " -e url
 cd
 mkdir -p /root/backup
 wget -O backup.zip "$url"
-unzip backup.zip  &> /dev/null
+unzip -o backup.zip  &> /dev/null
 rm -f backup.zip
 sleep 1
 echo Start Restore
@@ -130,7 +130,7 @@ read -rp "Link File: " -e url
 cd
 mkdir -p /root/backup
 wget -O backup.zip "$url"
-unzip backup.zip  &> /dev/null
+unzip -o backup.zip  &> /dev/null
 rm -f backup.zip
 sleep 1
 echo Start Restore

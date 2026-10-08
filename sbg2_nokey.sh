@@ -57,7 +57,12 @@ echo -e "${RED}ERROR: No se pudo descargar SBG.zip. Verifica conexion a internet
 sleep 3
 exit 1
 fi
-unzip -P "SCr1PtByJSpCfq8HTD" /root/SBG.zip >/dev/null 2>&1
+rm -rf /root/SBG
+unzip -o -P "SCr1PtByJSpCfq8HTD" /root/SBG.zip -d /root </dev/null >/dev/null 2>&1
+if [ ! -d /root/SBG ]; then
+echo -e "${RED}ERROR: No se pudo descomprimir SBG.zip${NC}"
+exit 1
+fi
 chmod -R 755 SBG/* >/dev/null 2>&1
 rm -rf /root/SBG.zip >/dev/null 2>&1
 clear
@@ -319,7 +324,7 @@ clear
 }
 res6() {
 GH_SUB="https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/sub-menus"
-GH_MAIN="https://raw.githubusercontent.com/DarkFault0726/sbg-sin-key/main"
+GH_MAIN="https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main"
 # Instalar binarios ELF limpios desde menuFREE.zip
 unzip -o -j -P SCr1PtByJS7ruxBx1Sj /root/SBG/menu/menuFREE.zip "menu/*" -d /usr/local/sbin 2>/dev/null
 chmod -R 755 /usr/local/sbin

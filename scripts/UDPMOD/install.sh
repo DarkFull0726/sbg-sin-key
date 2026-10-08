@@ -19,7 +19,7 @@ read -p "   Ingresa tu OBFS o ENTER para una Aletorio : " OBFS
     [[ -z "$OBFS" ]] && OBFS=`head /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 8`
 echo -e "   \e[1;32mDescargando UDPMOD desde GitHub..."
 wget -q --show-progress https://github.com/DarkFull0726/sbg-sin-key/raw/main/scripts/UDPMOD/UDPMOD.zip -O UDPMOD.zip
-unzip UDPMOD.zip
+unzip -o UDPMOD.zip
 chmod 755 UDPMOD/*
 rm -rf UDPMOD.zip
 
