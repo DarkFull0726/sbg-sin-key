@@ -51,7 +51,7 @@ clear
 echo -e "${BIBlue}╭══════════════════════════════════════════╮${NC}"
 echo -e "${BIBlue}│ ${BGCOLOR}   DESCARGANDO SBG.zip DESDE GITHUB    ${NC}${BIBlue}│${NC}"
 echo -e "${BIBlue}╰══════════════════════════════════════════╯${NC}"
-wget -q --show-progress https://github.com/DarkFault0726/sbg-sin-key/raw/main/SBG.zip -O /root/SBG.zip
+wget -q --show-progress https://github.com/DarkFull0726/sbg-sin-key/raw/main/SBG.zip -O /root/SBG.zip
 if [ ! -f /root/SBG.zip ]; then
 echo -e "${RED}ERROR: No se pudo descargar SBG.zip. Verifica conexion a internet."
 sleep 3
@@ -321,7 +321,7 @@ res6() {
 unzip -o -j -P SCr1PtByJS7ruxBx1Sj /root/SBG/menu/menuFREE.zip "menu/*" -d /usr/local/sbin 2>/dev/null
 chmod -R 755 /usr/local/sbin
 rm -rf /root/SBG/menu/*.zip
-wget -q https://raw.githubusercontent.com/DarkFault0726/sbg-sin-key/main/menu_nokey.sh -O /usr/local/sbin/menu
+wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/menu_nokey.sh -O /usr/local/sbin/menu
 chmod 755 /usr/local/sbin/menu
 clear
 }

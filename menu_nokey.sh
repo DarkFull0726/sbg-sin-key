@@ -447,7 +447,7 @@ iptables -t nat -D PREROUTING 1
 iptables -t nat -D PREROUTING 1
 iptables -t nat -D PREROUTING 1
 iptables -t nat -D PREROUTING 1
-cp /root/SBG/udp/udp-custom.sh . 2>/dev/null || wget -q https://raw.githubusercontent.com/DarkFault0726/sbg-sin-key/main/SBG/udp/udp-custom.sh 2>/dev/null
+cp /root/SBG/udp/udp-custom.sh . 2>/dev/null || wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/SBG/udp/udp-custom.sh 2>/dev/null
 chmod +x udp-custom.sh && ./udp-custom.sh
 rm -rf udp-custom.sh
 clear
