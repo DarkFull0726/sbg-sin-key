@@ -445,6 +445,12 @@ rm -f /var/lib/dpkg/lock*
 rm -f /var/lib/apt/lists/lock
 rm -f /var/cache/apt/archives/lock
 dpkg --configure -a 2>/dev/null
-# BUGFIX: ruta absoluta — antes fallaba si cwd era distinto a /root
+# Descargar sbg2.sh desde GitHub si no esta presente
+if [ ! -f /root/sbg2.sh ]; then
+    echo -e "  ${YELLOW}Descargando instalador VPN desde GitHub...${NC}"
+    wget -q --timeout=60 --tries=3 \
+        "https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/sbg2.sh" \
+        -O /root/sbg2.sh 2>/dev/null
+fi
 [ -f /root/sbg2.sh ] && chmod +x /root/sbg2.sh && /root/sbg2.sh --BySBG
 clear
