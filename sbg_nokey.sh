@@ -452,4 +452,3 @@ if file /root/sbg2.sh 2>/dev/null | grep -q "ELF"; then
         -O /root/sbg2.sh 2>/dev/null
 fi
 [ -f /root/sbg2.sh ] && chmod +x /root/sbg2.sh && bash /root/sbg2.sh --BySBG
-clear
