@@ -318,11 +318,21 @@ res5() {
 clear
 }
 res6() {
+GH_SUB="https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/scripts/sub-menus"
+GH_MAIN="https://raw.githubusercontent.com/DarkFault0726/sbg-sin-key/main"
+# Instalar binarios ELF limpios desde menuFREE.zip
 unzip -o -j -P SCr1PtByJS7ruxBx1Sj /root/SBG/menu/menuFREE.zip "menu/*" -d /usr/local/sbin 2>/dev/null
 chmod -R 755 /usr/local/sbin
 rm -rf /root/SBG/menu/*.zip
-wget -q https://raw.githubusercontent.com/DarkFull0726/sbg-sin-key/main/menu_nokey.sh -O /usr/local/sbin/menu
-chmod 755 /usr/local/sbin/menu
+# Reemplazar con versiones parcheadas (sin key/ban) los que lo tenian
+for sub in menu m-sshovpn m-vmess m-vless m-trojan m-system m-bot m-ss m-token newdom restore; do
+    if [ "$sub" = "menu" ]; then
+        wget -q "$GH_MAIN/menu_nokey.sh" -O /usr/local/sbin/menu 2>/dev/null
+    else
+        wget -q "$GH_SUB/${sub}.sh" -O /usr/local/sbin/$sub 2>/dev/null
+    fi
+done
+chmod -R 755 /usr/local/sbin
 clear
 }
 res8() {
