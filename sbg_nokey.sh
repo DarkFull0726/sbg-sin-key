@@ -14,6 +14,67 @@ BLUE='\033[1;34m'
 WH='\033[1;37m'
 OK='\033[1;32m[✔]\033[0m'
 EROR='\033[1;31m[✖]\033[0m'
+# // Verificacion temprana de arquitectura (antes de modificar el sistema)
+ARCH=$(uname -m)
+if [[ "$ARCH" != "x86_64" && "$ARCH" != "aarch64" ]]; then
+    echo -e "${EROR} Su arquitectura no es compatible ( ${YELLOW}${ARCH}${NC} )"
+    exit 1
+fi
+if [[ "$(id -u)" != "0" ]]; then
+    echo -e "${EROR} Ejecute como root ( sudo -i )"
+    exit 1
+fi
+# ===== SOPORTE ARM64 (aarch64) via box64 =====
+# Los binarios del script son x86_64; box64 los emula en ARM usando las libs nativas.
+setup_box64() {
+    local BOX_OK=0
+    echo -e "${YELLOW}🔧 Arquitectura ARM64 detectada: configurando box64 (emulador x86_64)...${NC}"
+    if command -v box64 >/dev/null 2>&1; then
+        BOX_OK=1
+    else
+        apt-get update -y >/dev/null 2>&1
+        # 1) intentar desde repositorio de la distro
+        apt-get install -y box64 >/dev/null 2>&1 && command -v box64 >/dev/null 2>&1 && BOX_OK=1
+    fi
+    if [ "$BOX_OK" != "1" ]; then
+        # 2) compilar desde el codigo oficial (ptitSeb/box64)
+        echo -e "${YELLOW}📦 Compilando box64 desde fuente (puede tardar varios minutos)...${NC}"
+        apt-get install -y git cmake build-essential python3 binutils >/dev/null 2>&1 || {
+            echo -e "${RED}✖ No se pudieron instalar dependencias de compilacion${NC}"; return 1; }
+        local BDIR
+        BDIR=$(mktemp -d /root/box64-build.XXXXXX)
+        git clone --depth 1 https://github.com/ptitSeb/box64.git "$BDIR/box64" >/dev/null 2>&1 || {
+            echo -e "${RED}✖ No se pudo clonar box64${NC}"; rm -rf "$BDIR"; return 1; }
+        mkdir -p "$BDIR/box64/build" && cd "$BDIR/box64/build" || return 1
+        cmake .. -DARM_DYNAREC=ON -DCMAKE_BUILD_TYPE=RelWithDebInfo >/dev/null 2>&1 \
+            && make -j"$(nproc)" >/dev/null 2>&1 \
+            && make install >/dev/null 2>&1 && BOX_OK=1
+        cd /root
+        rm -rf "$BDIR"
+    fi
+    if [ "$BOX_OK" != "1" ] || ! command -v box64 >/dev/null 2>&1; then
+        echo -e "${RED}✖ No se pudo instalar box64${NC}"
+        return 1
+    fi
+    # Registrar binfmt_misc para que los ELF x86_64 se ejecuten directo con box64
+    systemctl restart systemd-binfmt >/dev/null 2>&1
+    if [ ! -e /proc/sys/fs/binfmt_misc/box64 ]; then
+        mountpoint -q /proc/sys/fs/binfmt_misc || mount -t binfmt_misc binfmt_misc /proc/sys/fs/binfmt_misc 2>/dev/null
+        local BOXBIN
+        BOXBIN=$(command -v box64)
+        printf '%s\n' ":box64:M::\\x7fELF\\x02\\x01\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x02\\x00\\x3e\\x00:\\xff\\xff\\xff\\xff\\xff\\xfe\\xfe\\x00\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff\\xff:${BOXBIN}:" \
+            > /proc/sys/fs/binfmt_misc/register 2>/dev/null
+        # persistir tras reinicio
+        mkdir -p /etc/binfmt.d
+        [ -f /etc/binfmt.d/box64.conf ] || printf '%s\n' ":box64:M::\\x7fELF\\x02\\x01\\x01\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x00\\x02\\x00\\x3e\\x00:\\xff\\xff\\xff\\xff\\xff\\xfe\\xfe\\x00\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xff\\xfe\\xff\\xff\\xff:${BOXBIN}:" > /etc/binfmt.d/box64.conf
+    fi
+    if [ ! -e /proc/sys/fs/binfmt_misc/box64 ]; then
+        echo -e "${RED}✖ binfmt_misc no disponible: los binarios x86_64 no se ejecutaran directo${NC}"
+        return 1
+    fi
+    echo -e "${OK} box64 listo: $(box64 --version 2>/dev/null | head -n1)"
+    return 0
+}
 kill_zombies() {
     pkill -9 -f "apt|dpkg" 2>/dev/null
     pkill -9 -f "unattended-upgrades" 2>/dev/null
@@ -29,6 +90,9 @@ run_silent() {
 kill_zombies
 apt install -y figlet boxes >/dev/null 2>&1
 apt install -y pv >/dev/null 2>&1
+if [[ "$ARCH" == "aarch64" ]]; then
+    setup_box64 || { echo -e "${EROR} Fallo la configuracion de box64. Abortando."; exit 1; }
+fi
 unset HISTFILE
 history -cw
 # ===================
@@ -268,12 +332,11 @@ echo -e " ${RED}     Telegram : ${Wh}@Jerry_SBG ${NC}${RED} Grupo: ${NC}${Wh}sbg
 echo -e "${BIBlue}╰═══════════════════════════════════════════════════╯"
 echo ""
 sleep 0.1
-# // Checking Os Architecture
-if [[ $( uname -m | awk '{print $1}' ) == "x86_64" ]]; then
-    echo -e "${OK}${BIBlue} Su arquitectura es compatible ( ${WH}$( uname -m )${NC} )"
+# // Arquitectura
+if [[ "$ARCH" == "aarch64" ]]; then
+    echo -e "${OK}${BIBlue} Arquitectura ARM64 ( ${WH}aarch64${NC} ) - usando box64"
 else
-    echo -e "${EROR} Su arquitectura no es compatible ( ${YELLOW}$( uname -m )${NC} )"
-    exit 1
+    echo -e "${OK}${BIBlue} Su arquitectura es compatible ( ${WH}${ARCH}${NC} )"
 fi
 # // Checking System
 if [[ $( cat /etc/os-release | grep -w ID | head -n1 | sed 's/=//g' | sed 's/"//g' | sed 's/ID//g' ) == "ubuntu" ]]; then
